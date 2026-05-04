@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberEthic | DeepWeb Intelligence Viewer</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;700&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="CyberEthic.png" alt="CyberEthic">
+                <div class="brand-text">
+                    <span class="main-title">CyberEthic</span>
+                    <span class="sub-title">Research Lab</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Onion Surveillance Engine</h1>
+            <p>Advanced node auditing and visualization for secure research.</p>
+
+            <div class="search-container">
+                <input type="text" id="url-input" placeholder="Enter target .onion address..." spellcheck="false">
+                <div class="btn-group">
+                    <button id="fetch-btn">CONNECT</button>
+                    <button id="reset-btn" class="btn-secondary">RESET</button>
+                </div>
+            </div>
+            <div id="status" class="status-text">SYSTEM READY</div>
+        </div>
+    </section>
+
+    <section class="preview-section">
+        <div class="container">
+            <div class="browser-window">
+                <div class="window-header">
+                    <div class="dots"><span></span><span></span><span></span></div>
+                    <div class="nav-buttons">
+                        <button id="btn-back" class="nav-btn" title="Back">&#9664;</button>
+                        <button id="btn-forward" class="nav-btn" title="Forward">&#9654;</button>
+                        <button id="btn-refresh" class="nav-btn" title="Refresh">&#8635;</button>
+                    </div>
+                    <div id="display-url" class="url-bar">No active stream</div>
+                </div>
+                <div id="preview-area" class="preview-area">
+                    <div class="empty-msg">
+                        Awaiting destination instructions...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>CYBERETHIC</h3>
+                    <p>Protect what matters. Security by design.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/cyberethicc" target="_blank">GitHub</a>
+                    <a href="https://linkedin.com/company/cyberethicc" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2024 Built by CyberEthic under CyberEthic Research Lab. // ISO-27001 COMPLIANT
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
