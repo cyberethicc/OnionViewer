@@ -19,15 +19,11 @@
 
 ## 📖 Introduction
 
-**OnionViewer** is a professional-grade intelligence tool designed for cybersecurity researchers, threat hunters, and OSINT specialists. Built by **CyberEthic** under the [**CyberEthic Research Lab**](https://cyberethic.in/), it solves the fundamental challenge of darkweb auditing: **navigating .onion services safely from a surface-web environment.**
+**OnionViewer** ek professional-grade intelligence tool hai jo cybersecurity researchers, threat hunters aur OSINT specialists ke liye design kiya gaya hai. Yeh **CyberEthic Research Lab** ke under develop hua hai, aur iska main goal hai darkweb auditing ko safe aur accessible banana — bina direct exposure ke.
 
-The framework establishes a secure, local-only tunnel that proxies hidden services through Tor's network, performing real-time URL rewriting to ensure every interaction remains within the encrypted tunnel.
+Yeh framework ek secure local tunnel create karta hai jo Tor network ke through hidden services ko proxy karta hai, aur real-time URL rewriting karta hai taaki har interaction encrypted tunnel ke andar hi rahe.
 
-### 🎥 Demonstration
-
-https://github.com/user-attachments/assets/760a4f81-0b23-43aa-97ff-a671243f3c2c
-
-
+---
 
 ## 🧠 System Architecture & Workflow
 
@@ -60,20 +56,30 @@ sequenceDiagram
 ## 🔬 Core Research Pillars (Backend Architecture)
 
 ### 1. SOCKS5h Handshaking (socks-proxy-agent)
-The backend enforces a strict `socks5h` protocol. Unlike standard SOCKS5, the **SocksProxyAgent** library ensures that the DNS resolution of the `.onion` address happens entirely within the Tor network. This prevents local DNS leaks and ensures total network isolation at the protocol level.
-*   **Simple Way**: Ye library humare backend ko Tor network ke "tunnel" se connect karti hai. Iska kaam ye hai ki aapka asli location aur address kabhi leak na ho.
+Backend strictly `socks5h` protocol use karta hai. Yeh ensure karta hai ki `.onion` address ka DNS resolution Tor network ke andar hi ho — koi bhi local DNS leak nahi hota.
+
+*   **Simple Way**: Yeh library backend ko Tor ke secure tunnel se connect karti hai aur ensure karti hai ki user ka real IP ya location kabhi expose na ho.
+
+---
 
 ### 2. Recursive Buffer Processing (cheerio)
-Once the backend receives a response buffer from the Tor network, **Cheerio** is utilized to perform a high-speed, recursive transformation of the HTML structure. Every pointer (links, media, form actions) is rewritten in-memory to route through our proxy endpoint.
-*   **Simple Way**: Jab darkweb se data humare server par aata hai, toh ye library us data ko scan karti hai aur uske saare links ko badal deti hai taaki aap safely browse kar sakein.
+Jab backend ko Tor network se response milta hai, tab **Cheerio** use hota hai HTML ko process karne ke liye. Yeh saare links, media aur actions ko rewrite karta hai taaki sab kuch proxy ke through hi chale.
+
+*   **Simple Way**: Darkweb se aaya hua data scan hota hai aur uske saare links change ho jaate hain taaki browsing safe rahe.
+
+---
 
 ### 3. Fail-Safe Network Fetching (axios)
-**Axios** serves as the primary transport layer. It is configured with custom timeout logic and multi-port fallback (9050/9150). If the primary Tor Expert Bundle port is unreachable, the backend automatically reroutes the request through the Tor Browser port.
-*   **Simple Way**: Iska kaam hai data ko darkweb se "khinch" kar lana. Agar ek rasta band ho, toh ye khud dusra rasta (Tor port) dhoondh leta hai.
+**Axios** data fetch karne ke liye use hota hai, jisme custom timeout aur multi-port fallback system hai (9050/9150). Agar ek Tor port kaam na kare toh automatically dusra use ho jata hai.
+
+*   **Simple Way**: Yeh darkweb se data laata hai aur agar ek connection fail ho jaye toh automatically backup route try karta hai.
+
+---
 
 ### 4. Dynamic Request Routing (express)
-**Express.js** acts as the central brain, managing incoming requests and mapping them to the proxy engine. It handles both `GET` and `POST` methods, allowing for interactive navigation like searching or form submissions within the proxied hidden service.
-*   **Simple Way**: Ye humare tool ka "dimag" hai jo sab kuch control karta hai—aapka search request lena, usse Tor par bhejna, aur result wapas dikhana.
+**Express.js** poore system ka control center hai. Yeh incoming requests handle karta hai aur unhe Tor proxy engine tak route karta hai. GET aur POST dono support karta hai.
+
+*   **Simple Way**: Yeh system ka dimag hai — request lena, process karna aur response dikhana sab handle karta hai.
 
 ---
 
@@ -81,31 +87,29 @@ Once the backend receives a response buffer from the Tor network, **Cheerio** is
 
 | Feature | Standard Browser (Tor Settings) | OnionViewer Proxy Engine |
 | :--- | :--- | :--- |
-| **DNS Resolution** | Often local (Leaky) | Enforced Remote (SOCKS5h) |
-| **Traffic Handling** | Direct browser routing | Backend Intercepted & Rewritten |
-| **Header Security** | Browser-level default | Custom Stripped (Bypass Blocks) |
-| **URL Leaks** | High (Relative path leakage) | Zero (Recursive virtualization) |
-| **Complexity** | Manual setup required | Plug-and-play local tunnel |
-| **UI Persistence** | None (Site controls UI) | Professional Intelligence Dashboard |
+| **DNS Resolution** | Kabhi kabhi local (leak ho sakta hai) | Fully remote (secure via SOCKS5h) |
+| **Traffic Handling** | Direct browser routing | Backend se intercept aur rewrite |
+| **Header Security** | Default browser level | Custom secure headers |
+| **URL Leaks** | High chance | Zero leakage |
+| **Complexity** | Manual setup | Simple plug-and-play |
+| **UI Persistence** | Nahi | Dedicated dashboard |
 
 ---
 
 ## 🛠️ Prerequisites
 
-Ensure you have the following installed before deployment:
+Start karne se pehle yeh cheezein installed honi chahiye:
 
-1. **Node.js (v18.x or higher)**: The core backend runtime.
-2. **Tor Service**: You need an active Tor node.
-   - **Tor Browser**: Simplest way for beginners.
-   - **Tor Expert Bundle**: Best for dedicated research stations.
+1. **Node.js (v18.x ya higher)**  
+2. **Tor Service**
+   - Tor Browser (easy setup)
+   - Tor Expert Bundle (advanced use)
 
 ---
 
 ## 🚀 Installation & Deployment
 
-Follow these platform-specific instructions to deploy **OnionViewer**.
-
-### Step 1: Clone the Repository
+### Step 1: Clone Repository
 ```bash
 git clone https://github.com/cyberethicc/OnionViewer.git
 cd OnionViewer
@@ -116,48 +120,52 @@ cd OnionViewer
 npm install
 ```
 
-### Step 3: Start Tor (OS Specific)
+### Step 3: Start Tor
 
 #### **Windows**
-- **Option A (Easy)**: Open **Tor Browser** and keep it running in the background.
-- **Option B (Expert)**:
-  1. Download [Tor Expert Bundle](https://www.torproject.org/download/tor/).
-  2. Extract and run: `.\tor.exe` in your terminal.
+- Tor Browser open karke background me chala do  
+- Ya Tor Expert Bundle run karo
 
 #### **macOS**
-- **Option A (Homebrew)**:
-  ```bash
-  brew install tor
-  brew services start tor
-  ```
-- **Option B**: Launch **Tor Browser** and keep it minimized.
+```bash
+brew install tor
+brew services start tor
+```
 
-#### **Linux (Ubuntu/Debian)**
-- **Install & Start Service**:
-  ```bash
-  sudo apt update && sudo apt install tor -y
-  sudo systemctl start tor
-  ```
-- **Verify Connection**: `curl --socks5-hostname localhost:9050 https://check.torproject.org`
+#### **Linux**
+```bash
+sudo apt update && sudo apt install tor -y
+sudo systemctl start tor
+```
 
-### Step 4: Launch OnionViewer
+Check:
+```bash
+curl --socks5-hostname localhost:9050 https://check.torproject.org
+```
+
+---
+
+### Step 4: Run Project
 ```bash
 npm start
 ```
 
-Open **`http://127.0.0.1:8080`** in your browser to start auditing.
+Open:
+http://127.0.0.1:8080
 
 ---
 
 ## 🔗 Connection Hub
 
-- **Organization**: [CyberEthic Research Lab](https://cyberethic.in/)
-- **GitHub**: [github.com/cyberethicc](https://github.com/cyberethicc)
-- **LinkedIn**: [CyberEthic Intelligence](https://linkedin.com/company/cyberethicc)
-- **Collaboration**: [Faizan Khan](https://github.com/faizan-khanx)
+- **Organization**: https://cyberethic.in/  
+- **GitHub**: https://github.com/cyberethicc  
+- **LinkedIn**: https://linkedin.com/company/cyberethicc  
+- **Collaboration**: Faizan Khan  
+
+---
 
 <p align="center">
-  <b>Built by CyberEthic under the [CyberEthic Research Lab](https://cyberethic.in/).</b><br/>
-  <b>Collaboration by [Faizan Khan](https://github.com/faizan-khanx)</b><br/>
+  <b>Built by CyberEthic under CyberEthic Research Lab.</b><br/>
+  <b>Collaboration by Faizan Khan</b><br/>
   <sub>Research. Tools. Systems. Impact. // ISO-27001 Protocol</sub>
 </p>
