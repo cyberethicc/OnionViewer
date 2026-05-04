@@ -25,13 +25,9 @@ The framework establishes a secure, local-only tunnel that proxies hidden servic
 
 ### 🎥 Demonstration
 
-<div align="center">
-  <video src="onionviewer.mp4" width="100%" controls autoplay muted loop>
-    Your browser does not support the video tag.
-  </video>
-</div>
+https://github.com/user-attachments/assets/760a4f81-0b23-43aa-97ff-a671243f3c2c
 
----
+
 
 ## 🧠 System Architecture & Workflow
 
