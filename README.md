@@ -19,9 +19,9 @@
 
 ## 📖 Introduction
 
-**OnionViewer** ek professional-grade intelligence tool hai jo cybersecurity researchers, threat hunters aur OSINT specialists ke liye design kiya gaya hai. Yeh **CyberEthic Research Lab** ke under develop hua hai, aur iska main goal hai darkweb auditing ko safe aur accessible banana — bina direct exposure ke.
+**OnionViewer** is a professional-grade intelligence tool designed for cybersecurity researchers, threat hunters, and OSINT specialists. Developed under the **CyberEthic Research Lab**, its primary goal is to make dark web auditing safe and accessible without direct exposure.
 
-Yeh framework ek secure local tunnel create karta hai jo Tor network ke through hidden services ko proxy karta hai, aur real-time URL rewriting karta hai taaki har interaction encrypted tunnel ke andar hi rahe.
+The framework creates a secure local tunnel that proxies hidden services through the Tor network, while performing real-time URL rewriting to ensure all interactions remain within an encrypted environment.
 
 ---
 
@@ -56,30 +56,30 @@ sequenceDiagram
 ## 🔬 Core Research Pillars (Backend Architecture)
 
 ### 1. SOCKS5h Handshaking (socks-proxy-agent)
-Backend strictly `socks5h` protocol use karta hai. Yeh ensure karta hai ki `.onion` address ka DNS resolution Tor network ke andar hi ho — koi bhi local DNS leak nahi hota.
+The backend strictly uses the `socks5h` protocol. This ensures that DNS resolution for `.onion` addresses happens entirely within the Tor network, preventing any local DNS leaks.
 
-*   **Simple Way**: Yeh library backend ko Tor ke secure tunnel se connect karti hai aur ensure karti hai ki user ka real IP ya location kabhi expose na ho.
+*   **Simple Explanation**: This library connects the backend to the Tor network securely and ensures that the user's real IP address and location are never exposed.
 
 ---
 
 ### 2. Recursive Buffer Processing (cheerio)
-Jab backend ko Tor network se response milta hai, tab **Cheerio** use hota hai HTML ko process karne ke liye. Yeh saare links, media aur actions ko rewrite karta hai taaki sab kuch proxy ke through hi chale.
+Once a response is received from the Tor network, **Cheerio** processes the HTML structure and rewrites all links, media, and actions so that everything routes through the proxy.
 
-*   **Simple Way**: Darkweb se aaya hua data scan hota hai aur uske saare links change ho jaate hain taaki browsing safe rahe.
+*   **Simple Explanation**: The incoming data is scanned and all links are modified to ensure safe browsing through the proxy.
 
 ---
 
 ### 3. Fail-Safe Network Fetching (axios)
-**Axios** data fetch karne ke liye use hota hai, jisme custom timeout aur multi-port fallback system hai (9050/9150). Agar ek Tor port kaam na kare toh automatically dusra use ho jata hai.
+**Axios** handles data fetching with custom timeout logic and multi-port fallback (9050/9150). If one Tor port fails, it automatically switches to another.
 
-*   **Simple Way**: Yeh darkweb se data laata hai aur agar ek connection fail ho jaye toh automatically backup route try karta hai.
+*   **Simple Explanation**: It fetches data from the dark web and automatically retries using a backup route if the primary connection fails.
 
 ---
 
 ### 4. Dynamic Request Routing (express)
-**Express.js** poore system ka control center hai. Yeh incoming requests handle karta hai aur unhe Tor proxy engine tak route karta hai. GET aur POST dono support karta hai.
+**Express.js** acts as the control center, handling incoming requests and routing them through the Tor proxy engine. It supports both GET and POST methods.
 
-*   **Simple Way**: Yeh system ka dimag hai — request lena, process karna aur response dikhana sab handle karta hai.
+*   **Simple Explanation**: It manages requests, processes them, and returns responses to the user.
 
 ---
 
@@ -87,23 +87,23 @@ Jab backend ko Tor network se response milta hai, tab **Cheerio** use hota hai H
 
 | Feature | Standard Browser (Tor Settings) | OnionViewer Proxy Engine |
 | :--- | :--- | :--- |
-| **DNS Resolution** | Kabhi kabhi local (leak ho sakta hai) | Fully remote (secure via SOCKS5h) |
-| **Traffic Handling** | Direct browser routing | Backend se intercept aur rewrite |
-| **Header Security** | Default browser level | Custom secure headers |
-| **URL Leaks** | High chance | Zero leakage |
-| **Complexity** | Manual setup | Simple plug-and-play |
-| **UI Persistence** | Nahi | Dedicated dashboard |
+| **DNS Resolution** | Sometimes local (risk of leaks) | Fully remote (secure via SOCKS5h) |
+| **Traffic Handling** | Direct browser routing | Intercepted and rewritten via backend |
+| **Header Security** | Default browser-level | Custom secure headers |
+| **URL Leaks** | High risk | Zero leakage |
+| **Complexity** | Manual setup required | Simple plug-and-play |
+| **UI Persistence** | None | Dedicated dashboard |
 
 ---
 
 ## 🛠️ Prerequisites
 
-Start karne se pehle yeh cheezein installed honi chahiye:
+Ensure the following are installed:
 
-1. **Node.js (v18.x ya higher)**  
+1. **Node.js (v18.x or higher)**  
 2. **Tor Service**
    - Tor Browser (easy setup)
-   - Tor Expert Bundle (advanced use)
+   - Tor Expert Bundle (advanced setup)
 
 ---
 
@@ -123,8 +123,8 @@ npm install
 ### Step 3: Start Tor
 
 #### **Windows**
-- Tor Browser open karke background me chala do  
-- Ya Tor Expert Bundle run karo
+- Open Tor Browser and keep it running  
+- Or run Tor Expert Bundle
 
 #### **macOS**
 ```bash
