@@ -5,7 +5,7 @@
 <h1 align="center">🧅 OnionViewer</h1>
 
 <p align="center">
-  <b>Advanced High-Performance Backend Proxy & Tor-to-HTTP Tunneling Engine.</b>
+  <b>Advanced local-to-hidden-service tunneling & infrastructure surveillance engine.</b>
 </p>
 
 <p align="center">
@@ -33,45 +33,51 @@ The framework establishes a secure, local-only tunnel that proxies hidden servic
 
 ---
 
-## 🧠 Technical Workflow (Backend Sequence)
+## 🧠 System Architecture & Workflow
 
-This sequence diagram illustrates how **OnionViewer** handles a single request from the browser to the deep-web hidden service and back.
+### Backend Traffic Flow
 
 ```mermaid
 sequenceDiagram
     participant U as Researcher (Browser)
-    participant B as OnionViewer (Express)
-    participant P as SocksProxyAgent
+    participant B as OnionViewer (Express Engine)
+    participant P as SocksProxyAgent (SOCKS5h)
     participant T as Local Tor Node
     participant S as .Onion Service
 
     U->>B: GET /view?url=example.onion
-    Note over B: Middleware: Validate Target
-    B->>P: Initialize Request Stream
-    P->>T: SOCKS5h Handshake (Port 9050/9150)
-    Note over T: Tor Circuit Established
-    T->>S: Encrypted Request
-    S-->>T: Raw Response (HTML/Buffer)
-    T-->>P: Data Stream
-    P-->>B: In-Memory Buffer
-    Note over B: Cheerio: Recursive URL Rewriting
-    Note over B: Security: Strip Anti-Frame Headers
-    B-->>U: Sanitized HTML Response
+    Note over B: Middleware: URL Validation
+    B->>P: Route Request via Tor Agent
+    P->>T: SOCKS5h Handshake (DNS Hidden)
+    Note over T: Circuit Built (Relay Nodes)
+    T->>S: Encrypted Fetch
+    S-->>T: Raw Response Stream
+    T-->>P: Data Buffer
+    P-->>B: Pass Buffer to Backend
+    Note over B: Cheerio: Recursive String Manipulation
+    Note over B: Security: Header Sanitization
+    B-->>U: Final Processed Response
 ```
 
 ---
 
-## 🔬 Core Research Pillars (Backend Engineering)
+## 🔬 Core Research Pillars (Backend Architecture)
 
-### 1. Tunneling & Network Abstraction (SocksProxyAgent & Axios)
-The backend leverages **SocksProxyAgent** to wrap the entire communication layer in an encrypted SOCKS5h protocol. **Axios** is used to manage the stream, providing a robust interface for handling binary buffers and multi-port fallback (9050/9150). 
-- **Backend Logic**: Ensures every request is "Tor-aware" before it leaves the local machine. The backend automatically detects the active Tor port and binds the agent to the outbound request.
-- **Simple Way**: Ye part backend ko Tor network se jodta hai. Agar ek Tor port band ho, toh ye khud dusra port dhoondh kar connection banaye rakhta hai.
+### 1. SOCKS5h Handshaking (socks-proxy-agent)
+The backend enforces a strict `socks5h` protocol. Unlike standard SOCKS5, the **SocksProxyAgent** library ensures that the DNS resolution of the `.onion` address happens entirely within the Tor network. This prevents local DNS leaks and ensures total network isolation at the protocol level.
+*   **Simple Way**: Ye library humare backend ko Tor network ke "tunnel" se connect karti hai. Iska kaam ye hai ki aapka asli location aur address kabhi leak na ho.
 
-### 2. Recursive Stream Rewriting (Cheerio)
-Once a response is received from the hidden service, the backend intercepts the response stream and uses **Cheerio** to perform recursive string manipulation on the raw buffer.
-- **Backend Logic**: Scans for any string matching the destination's hostname or relative paths and replaces them with proxied URI structures (`/view?url=...`).
-- **Simple Way**: Jab darkweb se data server par aata hai, toh backend usme se saare "dangerous" links nikal kar unhe "safe" proxy links mein badal deta hai.
+### 2. Recursive Buffer Processing (cheerio)
+Once the backend receives a response buffer from the Tor network, **Cheerio** is utilized to perform a high-speed, recursive transformation of the HTML structure. Every pointer (links, media, form actions) is rewritten in-memory to route through our proxy endpoint.
+*   **Simple Way**: Jab darkweb se data humare server par aata hai, toh ye library us data ko scan karti hai aur uske saare links ko badal deti hai taaki aap safely browse kar sakein.
+
+### 3. Fail-Safe Network Fetching (axios)
+**Axios** serves as the primary transport layer. It is configured with custom timeout logic and multi-port fallback (9050/9150). If the primary Tor Expert Bundle port is unreachable, the backend automatically reroutes the request through the Tor Browser port.
+*   **Simple Way**: Iska kaam hai data ko darkweb se "khinch" kar lana. Agar ek rasta band ho, toh ye khud dusra rasta (Tor port) dhoondh leta hai.
+
+### 4. Dynamic Request Routing (express)
+**Express.js** acts as the central brain, managing incoming requests and mapping them to the proxy engine. It handles both `GET` and `POST` methods, allowing for interactive navigation like searching or form submissions within the proxied hidden service.
+*   **Simple Way**: Ye humare tool ka "dimag" hai jo sab kuch control karta hai—aapka search request lena, usse Tor par bhejna, aur result wapas dikhana.
 
 ---
 
@@ -88,19 +94,62 @@ Once a response is received from the hidden service, the backend intercepts the 
 
 ---
 
-## 🚀 Installation & Execution
+## 🛠️ Prerequisites
 
+Ensure you have the following installed before deployment:
+
+1. **Node.js (v18.x or higher)**: The core backend runtime.
+2. **Tor Service**: You need an active Tor node.
+   - **Tor Browser**: Simplest way for beginners.
+   - **Tor Expert Bundle**: Best for dedicated research stations.
+
+---
+
+## 🚀 Installation & Deployment
+
+Follow these platform-specific instructions to deploy **OnionViewer**.
+
+### Step 1: Clone the Repository
 ```bash
-# Clone the repository
 git clone https://github.com/cyberethicc/OnionViewer.git
-
-# Navigate and Install
 cd OnionViewer
-npm install
+```
 
-# Launch the engine
+### Step 2: Install Dependencies
+```bash
+npm install
+```
+
+### Step 3: Start Tor (OS Specific)
+
+#### **Windows**
+- **Option A (Easy)**: Open **Tor Browser** and keep it running in the background.
+- **Option B (Expert)**:
+  1. Download [Tor Expert Bundle](https://www.torproject.org/download/tor/).
+  2. Extract and run: `.\tor.exe` in your terminal.
+
+#### **macOS**
+- **Option A (Homebrew)**:
+  ```bash
+  brew install tor
+  brew services start tor
+  ```
+- **Option B**: Launch **Tor Browser** and keep it minimized.
+
+#### **Linux (Ubuntu/Debian)**
+- **Install & Start Service**:
+  ```bash
+  sudo apt update && sudo apt install tor -y
+  sudo systemctl start tor
+  ```
+- **Verify Connection**: `curl --socks5-hostname localhost:9050 https://check.torproject.org`
+
+### Step 4: Launch OnionViewer
+```bash
 npm start
 ```
+
+Open **`http://127.0.0.1:8080`** in your browser to start auditing.
 
 ---
 
@@ -114,5 +163,5 @@ npm start
 <p align="center">
   <b>Built by CyberEthic under the [CyberEthic Research Lab](https://cyberethic.in/).</b><br/>
   <b>Collaboration by [Faizan Khan](https://github.com/faizan-khanx)</b><br/>
-  <sub>Research. Tools. Systems. Impact.</sub>
+  <sub>Research. Tools. Systems. Impact. // ISO-27001 Protocol</sub>
 </p>
