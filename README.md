@@ -166,6 +166,5 @@ http://127.0.0.1:8080
 
 <p align="center">
   <b>Built by CyberEthic under CyberEthic Research Lab.</b><br/>
-  <b>Collaboration by Faizan Khan</b><br/>
   <sub>Research. Tools. Systems. Impact. // ISO-27001 Protocol</sub>
 </p>
